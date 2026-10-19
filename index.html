@@ -3,29 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An introduction to integration, with a guided lecture, practice problems, and worked solutions.">
+  <meta name="theme-color" content="#121212">
 
   <title>Introduction to Integration | Edwin Garcia Cuevas</title>
-  <meta
-    name="description"
-    content="An introduction to integration and Riemann sums, with supplementary practice problems and worked solutions."
-  >
 
   <style>
     :root {
       color-scheme: dark;
-
-      --background: #25292e;
-      --surface: #2c3036;
-      --surface-raised: #343940;
-      --border: #454b53;
-      --text: #e7e8eb;
-      --muted: #aeb5bd;
-
-      --gold: #f0d98a;
-      --teal: #65d6c2;
+      --background: #121212;
+      --card: #1e2228;
+      --raised: #292e35;
+      --border: #3b414a;
+      --text: #e2e8f0;
+      --body-text: #cbd5e1;
+      --muted: #94a3b8;
+      --gold: #f6e7a1;
+      --teal: #5eead4;
       --lavender: #d9a5e8;
-
-      --radius: 10px;
+      --radius: 14px;
     }
 
     * {
@@ -40,369 +36,311 @@
     body {
       min-height: 100vh;
       margin: 0;
-      display: flex;
-      flex-direction: column;
+      padding: 3rem 1.5rem 2rem;
       background: var(--background);
       color: var(--text);
-      font-family:
-        -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
     }
 
-    button {
-      font: inherit;
+    main {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     /* --------------------------------
-       Site header
+       Heading
     -------------------------------- */
 
-    .site-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-
-      padding: 23px clamp(20px, 5vw, 72px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .site-title {
-      margin: 0;
-      color: var(--gold);
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(1.8rem, 3vw, 2.4rem);
-      font-weight: 500;
-      letter-spacing: 0.015em;
-    }
-
-    .site-subtitle {
-      margin: 7px 0 0;
+    .eyebrow {
+      margin: 0 0 0.55rem;
       color: var(--muted);
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(0.85rem, 1.4vw, 1rem);
-      line-height: 1.5;
-    }
-
-    .author-label {
-      flex-shrink: 0;
-      color: var(--muted);
-      font-size: 0.72rem;
-      letter-spacing: 0.13em;
-      text-align: right;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
     }
 
-    /* --------------------------------
-       Main workspace
-    -------------------------------- */
-
-    .workspace {
-      width: 100%;
-      max-width: 1450px;
-      margin: 0 auto;
-      padding: 25px clamp(14px, 4vw, 52px) 36px;
-      flex: 1;
-    }
-
-    /* --------------------------------
-       Navigation tabs
-    -------------------------------- */
-
-    .resource-navigation {
-      display: flex;
-      align-items: stretch;
-      gap: 8px;
-
-      width: 100%;
-      margin-bottom: 0;
-      padding: 0 0 0 4px;
-
-      border-bottom: 1px solid var(--border);
-    }
-
-    .tab-button {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-
-      min-height: 54px;
-      padding: 0 23px;
-
-      border: 1px solid transparent;
-      border-bottom: none;
-      border-radius: 9px 9px 0 0;
-
-      color: var(--muted);
-      background: transparent;
-
-      font-size: 0.91rem;
-      cursor: pointer;
-
-      transition:
-        color 160ms ease,
-        background 160ms ease,
-        border-color 160ms ease;
-    }
-
-    .tab-button:hover {
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.035);
-    }
-
-    .tab-button:focus-visible {
-      z-index: 2;
-      outline: 2px solid var(--gold);
-      outline-offset: -3px;
-    }
-
-    .tab-number {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 0.78rem;
-      opacity: 0.7;
-    }
-
-    .tab-button[aria-selected="true"] {
-      margin-bottom: -1px;
-      border-color: var(--border);
-      border-bottom: 1px solid var(--surface);
+    h1 {
+      margin: 0;
       color: var(--gold);
-      background: var(--surface);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
     }
 
-    .tab-button[data-tab="problems"][aria-selected="true"] {
-      color: var(--teal);
+    .intro {
+      max-width: 690px;
+      margin: 1rem 0 0;
+      color: var(--body-text);
+      font-size: 1rem;
+      line-height: 1.75;
     }
 
-    .tab-button[data-tab="solutions"][aria-selected="true"] {
-      color: var(--lavender);
+    .byline {
+      margin: 0.9rem 0 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .author-name {
+      color: var(--gold);
+      font-weight: 750;
     }
 
     /* --------------------------------
-       Resource heading
+       Three-panel layout
     -------------------------------- */
 
-    .resource-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-
-      min-height: 76px;
-      padding: 15px 21px;
-
-      border: 1px solid var(--border);
-      border-top: none;
-      background: var(--surface);
+    .resources {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 1.25rem;
+      align-items: stretch;
+      margin-top: 2.25rem;
     }
 
-    .resource-heading-main {
+    .side-resources {
+      display: grid;
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
       min-width: 0;
     }
 
-    .resource-title {
+    /* --------------------------------
+       Resource cards
+    -------------------------------- */
+
+    .resource-card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card);
+      transition:
+        border-color 180ms ease,
+        background 180ms ease;
+    }
+
+    .resource-card:hover {
+      border-color: #59616d;
+      background: #20252b;
+    }
+
+    .lecture-card {
+      padding: 1.75rem;
+    }
+
+    .visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      aspect-ratio: 16 / 5;
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background:
+        radial-gradient(
+          ellipse at 50% 120%,
+          rgba(246, 231, 161, 0.09),
+          transparent 65%
+        ),
+        var(--raised);
+    }
+
+    .lecture-card .visual {
+      aspect-ratio: 16 / 5.5;
+      min-height: 145px;
+      margin-bottom: 1.5rem;
+    }
+
+    .visual svg {
+      width: 66px;
+      height: 66px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .lecture-card .visual svg {
+      width: 78px;
+      height: 78px;
+    }
+
+    .gold-icon {
+      color: var(--gold);
+    }
+
+    .teal-icon {
+      color: var(--teal);
+    }
+
+    .lavender-icon {
+      color: var(--lavender);
+    }
+
+    h2 {
       margin: 0;
       color: var(--gold);
       font-family: Georgia, "Times New Roman", serif;
-      font-size: 1.17rem;
+      font-size: 1.4rem;
       font-weight: 500;
+      line-height: 1.35;
+    }
+
+    .side-resources h2 {
+      font-size: 1.22rem;
+    }
+
+    .practice-card h2 {
+      color: var(--teal);
+    }
+
+    .solutions-card h2 {
+      color: var(--lavender);
     }
 
     .resource-description {
-      margin: 5px 0 0;
-      color: var(--muted);
-      font-size: 0.79rem;
+      margin: 0.7rem 0 1rem;
+      color: var(--body-text);
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    /* --------------------------------
+       Lecture topics
+    -------------------------------- */
+
+    .lesson-list {
+      display: grid;
+      gap: 0.65rem;
+      margin: 0.35rem 0 1.5rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--raised);
+      list-style: none;
+    }
+
+    .lesson-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.65rem;
+      color: var(--body-text);
+      font-size: 0.88rem;
       line-height: 1.5;
     }
 
-    .resource-index {
-      flex-shrink: 0;
-      color: var(--muted);
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
+    .lesson-list li::before {
+      content: "—";
+      color: var(--gold);
+      flex: 0 0 auto;
     }
 
     /* --------------------------------
-       Document viewer
+       Resource links
     -------------------------------- */
 
-    .document-container {
-      overflow: hidden;
-      width: 100%;
-
-      border: 1px solid var(--border);
-      border-top: none;
-      border-radius: 0 0 var(--radius) var(--radius);
-
-      background: var(--background);
-    }
-
-    .document-frame {
-      display: block;
-      width: 100%;
-      height: 82vh;
-      min-height: 620px;
-      max-height: 1200px;
-
-      border: 0;
-      background: var(--background);
-    }
-
-    .document-footer {
-      display: flex;
+    .resource-link {
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-
-      min-height: 39px;
-      padding: 8px 15px;
-
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      background: var(--surface);
-
-      font-size: 0.7rem;
-    }
-
-    .open-document {
-      color: var(--muted);
+      gap: 0.45rem;
+      align-self: flex-start;
+      margin-top: auto;
+      padding-top: 0.35rem;
+      color: var(--teal);
+      font-size: 0.92rem;
+      font-weight: 650;
       text-decoration: none;
-      white-space: nowrap;
       transition: color 160ms ease;
     }
 
-    .open-document:hover {
-      color: var(--gold);
+    .resource-link:hover {
+      text-decoration: underline;
     }
 
-    .open-document:focus-visible {
+    .resource-link:focus-visible {
       outline: 2px solid var(--gold);
-      outline-offset: 3px;
+      outline-offset: 5px;
+      border-radius: 2px;
     }
 
     /* --------------------------------
-       Site footer
+       Footer
     -------------------------------- */
 
-    .site-footer {
+    .course-footer {
       display: flex;
       justify-content: space-between;
-      gap: 15px;
-
-      padding: 15px clamp(16px, 5vw, 72px);
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.1rem;
       border-top: 1px solid var(--border);
-
       color: var(--muted);
-      font-size: 0.7rem;
-    }
-
-    .site-footer p {
-      margin: 0;
+      font-size: 0.76rem;
+      line-height: 1.5;
     }
 
     /* --------------------------------
-       Tablet
+       Responsive layout
     -------------------------------- */
 
-    @media (max-width: 800px) {
-      .site-header {
-        padding: 20px 24px;
+    @media (max-width: 760px) {
+      body {
+        padding: 2.25rem 1.1rem 1.5rem;
       }
 
-      .workspace {
-        padding: 20px 20px 28px;
+      .resources {
+        grid-template-columns: minmax(0, 1fr);
       }
 
-      .tab-button {
-        flex: 1;
-        padding: 0 12px;
+      .side-resources {
+        grid-template-rows: auto auto;
       }
 
-      .document-frame {
-        height: 76vh;
-        min-height: 540px;
+      .lecture-card {
+        padding: 1.5rem;
+      }
+
+      .lecture-card .visual {
+        min-height: 125px;
+      }
+
+      .side-resources .resource-card {
+        padding: 1.35rem;
       }
     }
 
-    /* --------------------------------
-       Mobile
-    -------------------------------- */
-
-    @media (max-width: 520px) {
-      .site-header {
-        padding: 17px 16px;
+    @media (max-width: 460px) {
+      body {
+        padding: 1.8rem 0.9rem 1.25rem;
       }
 
-      .site-title {
-        font-size: 1.8rem;
+      .resource-card,
+      .lecture-card {
+        padding: 1.15rem;
       }
 
-      .site-subtitle {
-        max-width: 285px;
-        font-size: 0.8rem;
+      h2 {
+        font-size: 1.25rem;
       }
 
-      .author-label {
-        max-width: 90px;
-        font-size: 0.59rem;
-        line-height: 1.6;
+      .side-resources h2 {
+        font-size: 1.13rem;
       }
 
-      .workspace {
-        padding: 15px 10px 24px;
-      }
-
-      .resource-navigation {
-        gap: 3px;
-        padding-left: 0;
-      }
-
-      .tab-button {
+      .course-footer {
         flex-direction: column;
-        gap: 3px;
-
-        min-height: 59px;
-        padding: 7px 3px;
-
-        font-size: 0.78rem;
-      }
-
-      .tab-number {
-        font-size: 0.65rem;
-      }
-
-      .resource-heading {
-        min-height: 69px;
-        padding: 12px;
-      }
-
-      .resource-title {
-        font-size: 1.03rem;
-      }
-
-      .resource-description {
-        font-size: 0.71rem;
-      }
-
-      .resource-index {
-        font-size: 0.64rem;
-      }
-
-      .document-frame {
-        height: 72vh;
-        min-height: 440px;
-      }
-
-      .document-footer {
-        padding: 9px 10px;
-        font-size: 0.65rem;
-      }
-
-      .site-footer {
-        padding: 12px;
-        font-size: 0.64rem;
+        gap: 0.35rem;
       }
     }
 
@@ -418,255 +356,128 @@
 </head>
 
 <body>
+  <main>
+    <header>
+      <p class="eyebrow">Analytic Geometry &amp; Calculus</p>
 
-  <header class="site-header">
-    <div>
-      <h1 class="site-title">Integration</h1>
-      <p class="site-subtitle">
-        History and an Introduction to Integration and Riemann Sums
+      <h1>Introduction to Integration</h1>
+
+      <p class="intro">
+        From geometric approximation to the definite integral.
+        Explore the ideas behind integration through a guided
+        lecture, focused practice, and worked solutions.
       </p>
-    </div>
 
-    <div class="author-label">
-      Edwin Garcia Cuevas
-    </div>
-  </header>
+      <p class="byline">
+        Designed and developed by
+        <strong class="author-name">Edwin Garcia Cuevas</strong>.
+      </p>
+    </header>
 
-  <main class="workspace">
+    <section class="resources" aria-label="Lesson resources">
 
-    <nav
-      class="resource-navigation"
-      role="tablist"
-      aria-label="Integration learning resources"
-    >
-      <button
-        class="tab-button"
-        id="tab-article"
-        type="button"
-        role="tab"
-        aria-selected="true"
-        aria-controls="resource-panel"
-        tabindex="0"
-        data-tab="article"
-      >
-        <span class="tab-number">01</span>
-        <span>Article</span>
-      </button>
-
-      <button
-        class="tab-button"
-        id="tab-problems"
-        type="button"
-        role="tab"
-        aria-selected="false"
-        aria-controls="resource-panel"
-        tabindex="-1"
-        data-tab="problems"
-      >
-        <span class="tab-number">02</span>
-        <span>Problems</span>
-      </button>
-
-      <button
-        class="tab-button"
-        id="tab-solutions"
-        type="button"
-        role="tab"
-        aria-selected="false"
-        aria-controls="resource-panel"
-        tabindex="-1"
-        data-tab="solutions"
-      >
-        <span class="tab-number">03</span>
-        <span>Solutions</span>
-      </button>
-    </nav>
-
-    <section
-      id="resource-panel"
-      role="tabpanel"
-      aria-labelledby="tab-article"
-      tabindex="0"
-    >
-      <header class="resource-heading">
-        <div class="resource-heading-main">
-          <h2 class="resource-title" id="resource-title">
-            Introduction to Integration
-          </h2>
-          <p class="resource-description" id="resource-description">
-            A guided exploration of integration and Riemann sums.
-          </p>
+      <!-- LEFT PANEL: LECTURE -->
+      <article class="resource-card lecture-card">
+        <div class="visual gold-icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64">
+            <path d="M8 13.5c8-3 16-1.5 24 3v35c-8-4.5-16-6-24-3z"/>
+            <path d="M56 13.5c-8-3-16-1.5-24 3v35c8-4.5 16-6 24-3z"/>
+            <path d="M14 22c4-.8 8-.2 12 1.5"/>
+            <path d="M14 29c4-.8 8-.2 12 1.5"/>
+            <path d="M14 36c4-.8 8-.2 12 1.5"/>
+            <path d="M38 23.5c4-1.7 8-2.3 12-1.5"/>
+            <path d="M38 30.5c4-1.7 8-2.3 12-1.5"/>
+            <path d="M38 37.5c4-1.7 8-2.3 12-1.5"/>
+          </svg>
         </div>
 
-        <span class="resource-index" id="resource-index">
-          01 / 03
-        </span>
-      </header>
+        <h2>Lecture</h2>
 
-      <div class="document-container">
-        <iframe
-          class="document-frame"
-          id="document-frame"
-          src="article.html"
-          title="Introduction to Integration article"
-          loading="eager"
-        ></iframe>
+        <p class="resource-description">
+          A guided introduction to integration, its historical
+          motivation, and the development of Riemann sums.
+        </p>
 
-        <div class="document-footer">
-          <span id="document-label">Reading material</span>
+        <ul class="lesson-list" aria-label="Topics covered">
+          <li>Geometric approximation</li>
+          <li>Partitions and sample points</li>
+          <li>The definite integral</li>
+        </ul>
+
+        <a class="resource-link" href="./lecture.html">
+          Read lecture <span aria-hidden="true">→</span>
+        </a>
+      </article>
+
+      <!-- RIGHT PANELS: PRACTICE AND SOLUTIONS -->
+      <div class="side-resources">
+
+        <article class="resource-card practice-card">
+          <div class="visual teal-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64">
+              <path d="M18 8h22l9 9v39H18z"/>
+              <path d="M40 8v10h9"/>
+              <path d="M25 28h16"/>
+              <path d="M25 36h10"/>
+              <path d="m25 45 4 4 8-9"/>
+            </svg>
+          </div>
+
+          <h2>Practice Problems</h2>
+
+          <p class="resource-description">
+            Apply the ideas through carefully selected exercises
+            and test your understanding.
+          </p>
 
           <a
-            class="open-document"
-            id="open-document"
-            href="article.html"
+            class="resource-link"
+            href="./practice.pdf"
             target="_blank"
             rel="noopener"
           >
-            Open separately ↗
+            Open exercises <span aria-hidden="true">↗</span>
           </a>
-        </div>
+        </article>
+
+        <article class="resource-card solutions-card">
+          <div class="visual lavender-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64">
+              <path d="M16 8h24l9 9v39H16z"/>
+              <path d="M40 8v10h9"/>
+              <path d="M23 29h17"/>
+              <path d="M23 36h10"/>
+              <circle cx="43" cy="45" r="9"/>
+              <path d="m39 45 3 3 5-6"/>
+            </svg>
+          </div>
+
+          <h2>Worked Solutions</h2>
+
+          <p class="resource-description">
+            Review the reasoning and compare your approach with
+            complete, step-by-step solutions.
+          </p>
+
+          <a
+            class="resource-link"
+            href="./solutions.pdf"
+            target="_blank"
+            rel="noopener"
+          >
+            Review solutions <span aria-hidden="true">↗</span>
+          </a>
+        </article>
+
       </div>
     </section>
 
+    <footer class="course-footer">
+      <span>Continuous White Noise</span>
+      <span>
+        Conceptual understanding · Guided practice · Mathematical reasoning
+      </span>
+    </footer>
   </main>
-
-  <footer class="site-footer">
-    <p>Continuous White Noise</p>
-    <p>Mathematics · Exploration · Understanding</p>
-  </footer>
-
-  <script>
-    const resources = {
-      article: {
-        title: "Introduction to Integration",
-        description:
-          "A guided exploration of integration and Riemann sums.",
-        index: "01 / 03",
-        label: "Reading material",
-        filename: "integration.html",
-        frameTitle: "Introduction to Integration"
-      },
-
-      problems: {
-        title: "Practice Problems",
-        description:
-          "Test your understanding.",
-        index: "02 / 03",
-        label: "Practice material",
-        filename: "practice.pdf",
-        frameTitle: "Riemann sums practice problems"
-      },
-
-      solutions: {
-        title: "Worked Solutions",
-        description:
-          "Review the reasoning and steps behind each solution.",
-        index: "03 / 03",
-        label: "Solutions and explanations",
-        filename: "solutions.pdf",
-        frameTitle: "Worked solutions to problems"
-      }
-    };
-
-    const tabs = Array.from(
-      document.querySelectorAll('[role="tab"]')
-    );
-
-    const panel = document.getElementById("resource-panel");
-    const title = document.getElementById("resource-title");
-    const description = document.getElementById("resource-description");
-    const index = document.getElementById("resource-index");
-    const frame = document.getElementById("document-frame");
-    const documentLabel = document.getElementById("document-label");
-    const openDocument = document.getElementById("open-document");
-
-    let activeResource = "article";
-
-    function selectResource(name, moveFocus = false) {
-      const resource = resources[name];
-
-      if (!resource) return;
-
-      activeResource = name;
-
-      tabs.forEach((tab) => {
-        const selected = tab.dataset.tab === name;
-
-        tab.setAttribute("aria-selected", String(selected));
-        tab.tabIndex = selected ? 0 : -1;
-      });
-
-      panel.setAttribute("aria-labelledby", `tab-${name}`);
-
-      title.textContent = resource.title;
-      description.textContent = resource.description;
-      index.textContent = resource.index;
-      documentLabel.textContent = resource.label;
-
-      frame.title = resource.frameTitle;
-      openDocument.href = resource.filename;
-
-      /*
-       * Only load a document when necessary.
-       * Returning to a previously opened tab preserves
-       * its iframe instead of unnecessarily reloading it.
-       */
-      if (frame.dataset.resource !== name) {
-        frame.src = resource.filename;
-        frame.dataset.resource = name;
-      }
-
-      if (moveFocus) {
-        tabs.find((tab) => tab.dataset.tab === name).focus();
-      }
-    }
-
-    tabs.forEach((tab) => {
-      tab.addEventListener("click", () => {
-        selectResource(tab.dataset.tab);
-      });
-
-      tab.addEventListener("keydown", (event) => {
-        const currentIndex = tabs.indexOf(tab);
-        let nextIndex = currentIndex;
-
-        switch (event.key) {
-          case "ArrowRight":
-            nextIndex = (currentIndex + 1) % tabs.length;
-            break;
-
-          case "ArrowLeft":
-            nextIndex =
-              (currentIndex - 1 + tabs.length) % tabs.length;
-            break;
-
-          case "Home":
-            nextIndex = 0;
-            break;
-
-          case "End":
-            nextIndex = tabs.length - 1;
-            break;
-
-          default:
-            return;
-        }
-
-        event.preventDefault();
-
-        selectResource(
-          tabs[nextIndex].dataset.tab,
-          true
-        );
-      });
-    });
-
-    /*
-     * Initialize the article as the main view.
-     */
-    frame.dataset.resource = "article";
-    selectResource("article");
-  </script>
-
 </body>
 </html>

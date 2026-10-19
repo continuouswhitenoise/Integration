@@ -3,413 +3,248 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="An introduction to integration, featuring a guided lecture, practice problems, and worked solutions.">
-  <meta name="theme-color" content="#121212">
 
   <title>Introduction to Integration | Edwin Garcia Cuevas</title>
+  <meta
+    name="description"
+    content="A guided introduction to integration, with lecture notes, practice problems, and worked solutions."
+  >
 
   <style>
     :root {
-      color-scheme: dark;
       --background: #121212;
-      --card: #1e2228;
-      --raised: #292e35;
+      --surface: #1e2228;
+      --surface-raised: #292e35;
       --border: #3b414a;
       --text: #e2e8f0;
-      --body-text: #cbd5e1;
-      --muted: #94a3b8;
+      --muted: #aeb5bd;
       --gold: #f6e7a1;
+      --gold-hover: #ffedb0;
       --teal: #5eead4;
       --lavender: #d9a5e8;
-      --radius: 14px;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html {
-      min-height: 100%;
-      scroll-behavior: smooth;
-    }
-
     body {
-      min-height: 100vh;
       margin: 0;
-      padding: 3rem 1.5rem 1.5rem;
+      min-height: 100vh;
       background: var(--background);
       color: var(--text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      line-height: 1.6;
     }
 
-    main {
-      width: 100%;
-      max-width: 1200px;
+    .container {
+      width: min(100% - 40px, 1000px);
       margin: 0 auto;
+      padding: 76px 0 30px;
     }
 
-    /* --------------------------------
-       Page heading
-    -------------------------------- */
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
 
     .eyebrow {
-      margin: 0 0 0.55rem;
-      color: var(--muted);
-      font-size: 0.74rem;
+      margin: 0 0 14px;
+      color: var(--teal);
+      font-size: 0.76rem;
       font-weight: 700;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
+    }
+
+    h1,
+    h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 500;
     }
 
     h1 {
       margin: 0;
       color: var(--gold);
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 500;
-      letter-spacing: -0.025em;
+      font-size: clamp(2.3rem, 6vw, 3.8rem);
       line-height: 1.15;
+      letter-spacing: -0.035em;
     }
 
-    .intro {
-      max-width: 720px;
-      margin: 1rem 0 0;
-      color: var(--body-text);
+    .subtitle {
+      max-width: 540px;
+      margin: 18px auto 0;
+      color: var(--muted);
       font-size: 1rem;
-      line-height: 1.75;
     }
 
     .byline {
-      margin: 0.9rem 0 0;
-      color: var(--muted);
+      margin-top: 18px;
+      color: #858d98;
       font-size: 0.88rem;
     }
 
-    .author-name {
-      color: var(--gold);
-      font-weight: 750;
-    }
-
-    /* --------------------------------
-       Main three-panel layout
-    -------------------------------- */
-
     .resources {
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      gap: 1.25rem;
-      align-items: stretch;
-      margin-top: 2.25rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
     }
 
-    .side-resources {
-      display: grid;
-      grid-template-rows: repeat(2, minmax(0, 1fr));
-      gap: 1.25rem;
-      min-width: 0;
-    }
-
-    /* --------------------------------
-       Cards
-    -------------------------------- */
-
-    .resource-card {
+    .card {
       display: flex;
       flex-direction: column;
+      align-items: flex-start;
       min-width: 0;
-      padding: 1.5rem;
+      padding: 28px;
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--card);
-      transition:
-        border-color 180ms ease,
-        background 180ms ease,
-        transform 180ms ease;
+      border-radius: 16px;
+      transition: border-color 180ms ease,
+                  transform 180ms ease;
     }
 
-    .resource-card:hover {
-      border-color: #59616d;
-      background: #20252b;
+    .card:hover {
+      border-color: #626a76;
+      transform: translateY(-3px);
     }
 
-    .lecture-card {
-      padding: 1.75rem;
-    }
-
-    .visual {
-      display: flex;
+    .lecture {
+      grid-column: 1 / -1;
       align-items: center;
-      justify-content: center;
-      width: 100%;
-      aspect-ratio: 16 / 5;
-      margin-bottom: 1.2rem;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      padding: 38px 28px;
+      text-align: center;
       background:
         radial-gradient(
-          ellipse at 50% 120%,
-          rgba(246, 231, 161, 0.09),
-          transparent 65%
+          ellipse at top,
+          rgba(246, 231, 161, 0.07),
+          transparent 68%
         ),
-        var(--raised);
+        var(--surface);
     }
 
-    .lecture-card .visual {
-      aspect-ratio: 16 / 5.5;
-      min-height: 145px;
-      margin-bottom: 1.5rem;
+    .icon {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      margin-bottom: 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-raised);
+      font-size: 1.5rem;
     }
 
-    .visual svg {
-      display: block;
-      width: 66px;
-      height: 66px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .lecture-card .visual svg {
-      width: 78px;
-      height: 78px;
-    }
-
-    .gold-icon {
+    .lecture .icon {
       color: var(--gold);
     }
 
-    .teal-icon {
+    .practice .icon {
       color: var(--teal);
     }
 
-    .lavender-icon {
+    .solutions .icon {
       color: var(--lavender);
     }
 
     h2 {
       margin: 0;
+      font-size: clamp(1.45rem, 3vw, 1.9rem);
+      line-height: 1.3;
+    }
+
+    .lecture h2 {
       color: var(--gold);
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 1.4rem;
-      font-weight: 500;
-      line-height: 1.35;
     }
 
-    .side-resources h2 {
-      font-size: 1.22rem;
-    }
-
-    .practice-card h2 {
+    .practice h2 {
       color: var(--teal);
     }
 
-    .solutions-card h2 {
+    .solutions h2 {
       color: var(--lavender);
     }
 
-    .resource-description {
-      margin: 0.7rem 0 1rem;
-      color: var(--body-text);
-      font-size: 0.92rem;
-      line-height: 1.7;
-    }
-
-    /* --------------------------------
-       Content previews
-    -------------------------------- */
-
-    .preview {
-      margin: 0.35rem 0 1.35rem;
-      padding: 1rem;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--raised);
-    }
-
-    .preview-label {
-      margin: 0 0 0.8rem;
+    .description {
+      margin: 10px 0 24px;
       color: var(--muted);
-      font-size: 0.65rem;
-      font-weight: 750;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
+      font-size: 0.94rem;
     }
 
-    .preview-heading {
-      margin: 0 0 0.55rem;
-      color: var(--text);
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 1rem;
-      font-weight: 500;
-      line-height: 1.45;
+    .lecture .description {
+      max-width: 460px;
     }
 
-    .preview-text {
-      margin: 0;
-      color: var(--body-text);
-      font-size: 0.82rem;
-      line-height: 1.65;
-    }
-
-    .preview-list {
-      display: grid;
-      gap: 0.65rem;
-      margin: 0.9rem 0 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .preview-list li {
-      display: flex;
-      align-items: baseline;
-      gap: 0.6rem;
-      color: var(--body-text);
-      font-size: 0.84rem;
-      line-height: 1.5;
-    }
-
-    .preview-list li::before {
-      content: "—";
-      flex: 0 0 auto;
-      color: var(--gold);
-    }
-
-    .practice-card .preview-list li::before {
-      color: var(--teal);
-    }
-
-    .solutions-card .preview-list li::before {
-      color: var(--lavender);
-    }
-
-    .math-preview {
-      margin: 0.85rem 0 0;
-      padding: 0.8rem 0.55rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: #1e2228;
-      color: var(--gold);
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(1rem, 2vw, 1.3rem);
-      line-height: 1.7;
-      text-align: center;
-      overflow-wrap: anywhere;
-    }
-
-    .practice-card .math-preview {
-      color: var(--teal);
-    }
-
-    .solutions-card .math-preview {
-      color: var(--lavender);
-    }
-
-    .preview-note {
-      margin: 0.65rem 0 0;
-      color: var(--muted);
-      font-size: 0.72rem;
-      line-height: 1.55;
-    }
-
-    /* --------------------------------
-       Links
-    -------------------------------- */
-
-    .resource-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      align-self: flex-start;
+    .button {
+      display: inline-block;
       margin-top: auto;
-      padding-top: 0.35rem;
-      color: var(--teal);
-      font-size: 0.92rem;
-      font-weight: 650;
+      padding: 11px 22px;
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      background: var(--gold);
+      color: #202020;
+      font-size: 0.9rem;
+      font-weight: 750;
       text-decoration: none;
-      transition: color 160ms ease;
+      transition: background 160ms ease,
+                  border-color 160ms ease,
+                  transform 160ms ease;
     }
 
-    .resource-link:hover {
-      text-decoration: underline;
+    .button:hover {
+      background: var(--gold-hover);
+      border-color: var(--gold-hover);
+      transform: translateY(-1px);
     }
 
-    .resource-link:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 5px;
-      border-radius: 2px;
+    .button:focus-visible {
+      outline: 2px solid white;
+      outline-offset: 4px;
     }
 
-    /* --------------------------------
-       Copyright footer
-    -------------------------------- */
+    footer {
+      margin-top: 58px;
+      padding-top: 22px;
+      border-top: 1px solid #2b2f35;
+      color: #858d98;
+      font-size: 0.76rem;
+      text-align: center;
+    }
 
     .copyright {
-      max-width: 1050px;
-      margin: 2.5rem auto 0;
-      padding: 1.25rem 0 0;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 0.72rem;
-      line-height: 1.8;
-      text-align: center;
+      max-width: 760px;
+      margin: 0 auto;
     }
 
-    /* --------------------------------
-       Responsive layout
-    -------------------------------- */
+    @media (max-width: 600px) {
+      .container {
+        width: min(100% - 28px, 1000px);
+        padding-top: 48px;
+      }
 
-    @media (max-width: 760px) {
-      body {
-        padding: 2.25rem 1.1rem 1.5rem;
+      header {
+        margin-bottom: 34px;
       }
 
       .resources {
-        grid-template-columns: minmax(0, 1fr);
+        grid-template-columns: 1fr;
+        gap: 16px;
       }
 
-      .side-resources {
-        grid-template-rows: auto auto;
+      .lecture {
+        grid-column: auto;
       }
 
-      .lecture-card {
-        padding: 1.5rem;
+      .card {
+        padding: 24px;
       }
 
-      .lecture-card .visual {
-        min-height: 125px;
+      .lecture {
+        padding: 30px 22px;
       }
 
-      .side-resources .resource-card {
-        padding: 1.35rem;
-      }
-    }
-
-    @media (max-width: 460px) {
-      body {
-        padding: 1.8rem 0.9rem 1.25rem;
-      }
-
-      .resource-card,
-      .lecture-card {
-        padding: 1.15rem;
-      }
-
-      h2 {
-        font-size: 1.25rem;
-      }
-
-      .side-resources h2 {
-        font-size: 1.13rem;
-      }
-
-      .copyright {
-        margin-top: 2rem;
-        font-size: 0.68rem;
+      footer {
+        margin-top: 40px;
       }
     }
 
@@ -417,7 +252,6 @@
       *,
       *::before,
       *::after {
-        scroll-behavior: auto !important;
         transition: none !important;
       }
     }
@@ -425,210 +259,75 @@
 </head>
 
 <body>
-  <main>
+  <main class="container">
     <header>
       <p class="eyebrow">Analytic Geometry &amp; Calculus</p>
-
       <h1>Introduction to Integration</h1>
-
-      <p class="intro">
-        From geometric approximation to the definite integral.
-        Explore the ideas behind integration through a guided
-        lecture, focused practice, and worked solutions.
+      <p class="subtitle">
+        Explore the lecture, test your understanding, and work
+        through the solutions.
       </p>
-
       <p class="byline">
-        Designed and developed by
-        <strong class="author-name">Edwin Garcia Cuevas</strong>.
+        Designed and developed by Edwin Garcia Cuevas
       </p>
     </header>
 
-    <section class="resources" aria-label="Lesson resources">
+    <section class="resources" aria-label="Learning materials">
 
-      <!-- LEFT PANEL: LECTURE -->
-
-      <article class="resource-card lecture-card">
-        <div class="visual gold-icon" aria-hidden="true">
-          <svg viewBox="0 0 64 64">
-            <path d="M8 13.5c8-3 16-1.5 24 3v35c-8-4.5-16-6-24-3z"/>
-            <path d="M56 13.5c-8-3-16-1.5-24 3v35c8-4.5 16-6 24-3z"/>
-            <path d="M14 22c4-.8 8-.2 12 1.5"/>
-            <path d="M14 29c4-.8 8-.2 12 1.5"/>
-            <path d="M14 36c4-.8 8-.2 12 1.5"/>
-            <path d="M38 23.5c4-1.7 8-2.3 12-1.5"/>
-            <path d="M38 30.5c4-1.7 8-2.3 12-1.5"/>
-            <path d="M38 37.5c4-1.7 8-2.3 12-1.5"/>
-          </svg>
-        </div>
-
-        <h2>Lecture</h2>
-
-        <p class="resource-description">
-          A guided introduction to integration, its historical
-          motivation, and the development of Riemann sums.
+      <article class="card lecture">
+        <div class="icon" aria-hidden="true">∫</div>
+        <h2>The Lecture</h2>
+        <p class="description">
+          A guided exploration of the ideas behind integration.
         </p>
-
-        <div class="preview">
-          <p class="preview-label">Inside the lecture</p>
-
-          <h3 class="preview-heading">From geometry to integration</h3>
-
-          <p class="preview-text">
-            How can we find the area beneath a curve when the
-            region is not a familiar geometric shape? Begin with
-            approximations and develop the central idea behind
-            the definite integral.
-          </p>
-
-          <div class="math-preview">
-            A = lim<sub>n → ∞</sub> ∑ f(x<sub>i</sub><sup>*</sup>) Δx
-          </div>
-
-          <ul class="preview-list">
-            <li>Historical motivation and geometric approximation</li>
-            <li>Partitions, rectangles, and sample points</li>
-            <li>Riemann sums and the definite integral</li>
-          </ul>
-        </div>
-
-        <a class="resource-link" href="./integration.html">
-          Read lecture <span aria-hidden="true">→</span>
+        <a class="button" href="./integration.html">
+          Open Lecture
         </a>
       </article>
 
-      <!-- RIGHT PANELS -->
+      <article class="card practice">
+        <div class="icon" aria-hidden="true">✎</div>
+        <h2>Practice Problems</h2>
+        <p class="description">
+          Apply the concepts and strengthen your understanding.
+        </p>
+        <a
+          class="button"
+          href="./practice.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Problems
+        </a>
+      </article>
 
-      <div class="side-resources">
+      <article class="card solutions">
+        <div class="icon" aria-hidden="true">✓</div>
+        <h2>Worked Solutions</h2>
+        <p class="description">
+          Review the solutions and check your reasoning.
+        </p>
+        <a
+          class="button"
+          href="./solutions.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Solutions
+        </a>
+      </article>
 
-        <!-- PRACTICE PANEL -->
-
-        <article class="resource-card practice-card">
-          <div class="visual teal-icon" aria-hidden="true">
-            <svg viewBox="0 0 64 64">
-              <path d="M18 8h22l9 9v39H18z"/>
-              <path d="M40 8v10h9"/>
-              <path d="M25 28h16"/>
-              <path d="M25 36h10"/>
-              <path d="m25 45 4 4 8-9"/>
-            </svg>
-          </div>
-
-          <h2>Practice Problems</h2>
-
-          <p class="resource-description">
-            Put your understanding to work through focused
-            exercises on approximation and integration.
-          </p>
-
-          <div class="preview">
-            <p class="preview-label">A glimpse at the exercises</p>
-
-            <h3 class="preview-heading">Explore a Riemann sum</h3>
-
-            <p class="preview-text">
-              Consider the function below on the interval
-              from 0 to 2. Use a right-endpoint Riemann sum
-              to approximate the area under its graph.
-            </p>
-
-            <div class="math-preview">
-              f(x) = x<sup>2</sup>, &nbsp; [0, 2]
-            </div>
-
-            <ul class="preview-list">
-              <li>Identify the width of each subinterval.</li>
-              <li>Evaluate the function at the sample points.</li>
-              <li>Construct and interpret the sum.</li>
-            </ul>
-
-            <p class="preview-note">
-              Illustrative preview; consult the linked PDF
-              for the actual assigned exercises.
-            </p>
-          </div>
-
-          <a
-            class="resource-link"
-            href="./practice.pdf"
-            target="_blank"
-            rel="noopener"
-          >
-            Open exercises <span aria-hidden="true">↗</span>
-          </a>
-        </article>
-
-        <!-- SOLUTIONS PANEL -->
-
-        <article class="resource-card solutions-card">
-          <div class="visual lavender-icon" aria-hidden="true">
-            <svg viewBox="0 0 64 64">
-              <path d="M16 8h24l9 9v39H16z"/>
-              <path d="M40 8v10h9"/>
-              <path d="M23 29h17"/>
-              <path d="M23 36h10"/>
-              <circle cx="43" cy="45" r="9"/>
-              <path d="m39 45 3 3 5-6"/>
-            </svg>
-          </div>
-
-          <h2>Worked Solutions</h2>
-
-          <p class="resource-description">
-            Follow the mathematical reasoning, review the
-            intermediate steps, and check your work.
-          </p>
-
-          <div class="preview">
-            <p class="preview-label">A glimpse at the reasoning</p>
-
-            <h3 class="preview-heading">Building the approximation</h3>
-
-            <p class="preview-text">
-              For an equal partition of [0, 2] into n subintervals,
-              the width of each subinterval is
-            </p>
-
-            <div class="math-preview">
-              Δx = <span>2</span> / <span>n</span>
-            </div>
-
-            <p class="preview-text" style="margin-top: 0.8rem;">
-              With right endpoints x<sub>i</sub> = 2i/n,
-              the corresponding sum is
-            </p>
-
-            <div class="math-preview">
-              R<sub>n</sub> =
-              ∑<sub>i=1</sub><sup>n</sup>
-              (2i/n)<sup>2</sup> (2/n)
-            </div>
-
-            <p class="preview-note">
-              Illustrative mathematical preview; the linked PDF
-              contains the actual worked solutions.
-            </p>
-          </div>
-
-          <a
-            class="resource-link"
-            href="./solutions.pdf"
-            target="_blank"
-            rel="noopener"
-          >
-            Review solutions <span aria-hidden="true">↗</span>
-          </a>
-        </article>
-
-      </div>
     </section>
 
-    <footer class="copyright">
-      Copyright © 2026 Edwin Garcia Cuevas. All rights reserved.
-      No part of this publication may be reproduced, distributed,
-      or transmitted in any form or by any means, electronic or
-      mechanical, including photocopying, recording, or by any
-      information storage and retrieval system, without prior
-      written permission of the author.
+    <footer>
+      <p class="copyright">
+        Copyright © 2026 Edwin Garcia Cuevas. All rights reserved.
+        No part of this publication may be reproduced, distributed,
+        or transmitted in any form or by any means, electronic or
+        mechanical, including photocopying, recording, or by any
+        information storage and retrieval system, without prior
+        written permission of the author.
+      </p>
     </footer>
   </main>
 </body>

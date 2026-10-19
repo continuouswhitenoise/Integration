@@ -1,1 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <title>Integration | Online Lecture</title>
+  <meta
+    name="description"
+    content="An online integration lecture with accompanying practice problems and handwritten solutions."
+  >
+
+  <style>
+    :root {
+      color-scheme: dark;
+
+      --background: #25292e;
+      --surface: #2c3036;
+      --surface-raised: #343940;
+      --border: #454b53;
+      --text: #e7e8eb;
+      --muted: #aeb5bd;
+
+      --gold: #f0d98a;
+      --teal: #65d6c2;
+      --lavender: #d9a5e8;
+
+      --header-height: 88px;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--background);
+      color: var(--text);
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    /* Header */
+
+    .site-header {
+      flex-shrink: 0;
+      min-height: var(--header-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 28px;
+      border-bottom: 1px solid var(--border);
+      background: var(--background);
+    }
+
+    .site-title {
+      margin: 0;
+      color: var(--gold);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 600;
+      letter-spacing: 0.025em;
+    }
+
+    .site-subtitle {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.035em;
+    }
+
+    .header-label {
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-align: right;
+      text-transform: uppercase;
+    }
+
+    /* Three-panel workspace */
+
+    .workspace {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      padding: 16px;
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-shrink: 0;
+      min-height: 66px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-raised);
+    }
+
+    .panel-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .panel-number {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      place-items: center;
+      border: 1px solid currentColor;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .lecture .panel-number,
+    .lecture .panel-title {
+      color: var(--gold);
+    }
+
+    .problems .panel-number,
+    .problems .panel-title {
+      color: var(--teal);
+    }
+
+    .solutions .panel-number,
+    .solutions .panel-title {
+      color: var(--lavender);
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .panel-description {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    .open-link {
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      color: var(--text);
+      background: var(--surface);
+      font-size: 0.75rem;
+      text-decoration: none;
+      transition:
+        background 160ms ease,
+        border-color 160ms ease;
+    }
+
+    .open-link:hover {
+      border-color: var(--gold);
+      background: #3b4047;
+    }
+
+    .open-link:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    /* Embedded documents */
+
+    .document-frame {
+      display: block;
+      flex: 1;
+      width: 100%;
+      min-height: 0;
+      border: 0;
+      background: var(--background);
+    }
+
+    .panel-footer {
+      flex-shrink: 0;
+      padding: 9px 13px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    /* Bottom footer */
+
+    .site-footer {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    /* Medium screens */
+
+    @media (max-width: 1050px) {
+      .workspace {
+        gap: 10px;
+        padding: 10px;
+      }
+
+      .panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .panel-heading {
+        width: 100%;
+      }
+
+      .open-link {
+        width: 100%;
+      }
+    }
+
+    /* Mobile: switch between panels */
+
+    @media (max-width: 700px) {
+      body {
+        height: 100dvh;
+      }
+
+      .site-header {
+        min-height: auto;
+        padding: 14px 16px;
+      }
+
+      .header-label {
+        display: none;
+      }
+
+      .site-subtitle {
+        font-size: 0.78rem;
+      }
+
+      .workspace {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        overflow: hidden;
+      }
+
+      .mobile-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+        flex-shrink: 0;
+        padding-bottom: 10px;
+      }
+
+      .tab-button {
+        min-width: 0;
+        padding: 11px 5px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--muted);
+        background: var(--surface);
+        font: inherit;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+
+      .tab-button[aria-selected="true"] {
+        border-color: var(--gold);
+        color: var(--gold);
+        background: var(--surface-raised);
+      }
+
+      .panel {
+        display: none;
+        flex: 1;
+      }
+
+      .panel.is-active {
+        display: flex;
+      }
+
+      .panel-header {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .open-link {
+        width: auto;
+      }
+
+      .site-footer {
+        padding: 9px 12px;
+        font-size: 0.65rem;
+      }
+    }
+
+    @media (min-width: 701px) {
+      .mobile-tabs {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div>
+      <h1 class="site-title">Integration</h1>
+      <p class="site-subtitle">
+        Lecture, problems, and worked solutions
+      </p>
+    </div>
+
+    <div class="header-label">
+      Online Mathematics Lecture
+    </div>
+  </header>
+
+  <main class="workspace">
+
+    <!-- Mobile navigation -->
+    <nav class="mobile-tabs"
+         role="tablist"
+         aria-label="Lecture resources">
+
+      <button class="tab-button"
+              id="tab-lecture"
+              role="tab"
+              aria-selected="true"
+              aria-controls="panel-lecture"
+              data-target="panel-lecture">
+        Lecture
+      </button>
+
+      <button class="tab-button"
+              id="tab-problems"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-problems"
+              data-target="panel-problems">
+        Problems
+      </button>
+
+      <button class="tab-button"
+              id="tab-solutions"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-solutions"
+              data-target="panel-solutions">
+        Solutions
+      </button>
+    </nav>
+
+    <!-- PANEL 1: LECTURE -->
+
+    <section class="panel lecture is-active"
+             id="panel-lecture"
+             role="tabpanel"
+             aria-labelledby="tab-lecture">
+
+      <div class="panel-header">
+        <div class="panel-heading">
+          <span class="panel-number">01</span>
+          <div>
+            <h2 class="panel-title">Lecture</h2>
+            <p class="panel-description">
+              Read and study the material
+            </p>
+          </div>
+        </div>
+
+        <a class="open-link"
+           href="integration.html"
+           target="_blank"
+           rel="noopener">
+          Open ↗
+        </a>
+      </div>
+
+      <iframe
+        class="document-frame"
+        src="integration.html"
+        title="Integration lecture article">
+      </iframe>
+
+      <div class="panel-footer">
+        Lecture notes
+      </div>
+    </section>
+
+    <!-- PANEL 2: PROBLEMS -->
+
+    <section class="panel problems"
+             id="panel-problems"
+             role="tabpanel"
+             aria-labelledby="tab-problems">
+
+      <div class="panel-header">
+        <div class="panel-heading">
+          <span class="panel-number">02</span>
+          <div>
+            <h2 class="panel-title">Problems</h2>
+            <p class="panel-description">
+              Practice the techniques
+            </p>
+          </div>
+        </div>
+
+        <a class="open-link"
+           href="problems.pdf"
+           target="_blank"
+           rel="noopener">
+          Open ↗
+        </a>
+      </div>
+
+      <iframe
+        class="document-frame"
+        src="problems.pdf"
+        title="Integration practice problems PDF">
+      </iframe>
+
+      <div class="panel-footer">
+        Practice exercises
+      </div>
+    </section>
+
+    <!-- PANEL 3: SOLUTIONS -->
+
+    <section class="panel solutions"
+             id="panel-solutions"
+             role="tabpanel"
+             aria-labelledby="tab-solutions">
+
+      <div class="panel-header">
+        <div class="panel-heading">
+          <span class="panel-number">03</span>
+          <div>
+            <h2 class="panel-title">Solutions</h2>
+            <p class="panel-description">
+              Review the worked solutions
+            </p>
+          </div>
+        </div>
+
+        <a class="open-link"
+           href="solutions.pdf"
+           target="_blank"
+           rel="noopener">
+          Open ↗
+        </a>
+      </div>
+
+      <iframe
+        class="document-frame"
+        src="solutions.pdf"
+        title="Handwritten integration solutions PDF">
+      </iframe>
+
+      <div class="panel-footer">
+        Worked solutions
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <span>Integration · Online Lecture</span>
+    <span>Mathematics through understanding</span>
+  </footer>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab-button");
+    const panels = document.querySelectorAll(".panel");
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const targetId = tab.dataset.target;
+
+        tabs.forEach((button) => {
+          button.setAttribute(
+            "aria-selected",
+            String(button === tab)
+          );
+        });
+
+        panels.forEach((panel) => {
+          panel.classList.toggle(
+            "is-active",
+            panel.id === targetId
+          );
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

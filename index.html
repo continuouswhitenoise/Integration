@@ -7,7 +7,7 @@
   <title>Integration | Online Lecture</title>
   <meta
     name="description"
-    content="An online integration lecture with accompanying practice problems and handwritten solutions."
+    content="A guided study of integration, with a lecture, practice problems, and worked solutions."
   >
 
   <style>
@@ -25,7 +25,6 @@
       --teal: #65d6c2;
       --lavender: #d9a5e8;
 
-      --header-height: 88px;
       --radius: 12px;
     }
 
@@ -55,7 +54,7 @@
 
     .site-header {
       flex-shrink: 0;
-      min-height: var(--header-height);
+      min-height: 88px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -89,16 +88,21 @@
       text-transform: uppercase;
     }
 
-    /* Three-panel workspace */
+    /* Main workspace */
 
     .workspace {
       flex: 1;
       min-height: 0;
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns:
+        minmax(0, 2fr)
+        minmax(0, 1fr)
+        minmax(0, 1fr);
       gap: 14px;
       padding: 16px;
     }
+
+    /* Individual panels */
 
     .panel {
       display: flex;
@@ -167,7 +171,47 @@
       margin: 4px 0 0;
       color: var(--muted);
       font-size: 0.72rem;
+      line-height: 1.4;
     }
+
+    /* Lecture: visual centerpiece */
+
+    .panel.lecture {
+      border-color: #85784d;
+      box-shadow: 0 0 0 1px rgba(240, 217, 138, 0.08);
+    }
+
+    .panel.lecture .panel-header {
+      min-height: 76px;
+      padding: 16px;
+      background: #3a3933;
+      border-bottom-color: #655b3e;
+    }
+
+    .panel.lecture .panel-number {
+      width: 38px;
+      height: 38px;
+      font-size: 0.85rem;
+    }
+
+    .panel.lecture .panel-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.015em;
+    }
+
+    .panel.lecture .panel-description {
+      font-size: 0.78rem;
+    }
+
+    /* Supporting resources */
+
+    .panel.problems .panel-title,
+    .panel.solutions .panel-title {
+      font-size: 0.95rem;
+    }
+
+    /* Open-document links */
 
     .open-link {
       display: inline-flex;
@@ -197,7 +241,7 @@
       outline-offset: 3px;
     }
 
-    /* Embedded documents */
+    /* Embedded HTML and PDF documents */
 
     .document-frame {
       display: block;
@@ -216,7 +260,7 @@
       font-size: 0.72rem;
     }
 
-    /* Bottom footer */
+    /* Site footer */
 
     .site-footer {
       flex-shrink: 0;
@@ -231,8 +275,12 @@
 
     /* Medium screens */
 
-    @media (max-width: 1050px) {
+    @media (max-width: 1050px) and (min-width: 701px) {
       .workspace {
+        grid-template-columns:
+          minmax(0, 1.6fr)
+          minmax(0, 1fr)
+          minmax(0, 1fr);
         gap: 10px;
         padding: 10px;
       }
@@ -249,12 +297,21 @@
       .open-link {
         width: 100%;
       }
+
+      .panel.lecture .panel-header {
+        align-items: flex-start;
+      }
     }
 
-    /* Mobile: switch between panels */
+    /* Mobile navigation */
+
+    .mobile-tabs {
+      display: none;
+    }
 
     @media (max-width: 700px) {
       body {
+        height: 100vh;
         height: 100dvh;
       }
 
@@ -274,8 +331,8 @@
       .workspace {
         display: flex;
         flex-direction: column;
-        padding: 10px;
         overflow: hidden;
+        padding: 10px;
       }
 
       .mobile-tabs {
@@ -304,6 +361,11 @@
         background: var(--surface-raised);
       }
 
+      .tab-button:focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: 2px;
+      }
+
       .panel {
         display: none;
         flex: 1;
@@ -313,9 +375,25 @@
         display: flex;
       }
 
-      .panel-header {
+      .panel-header,
+      .panel.lecture .panel-header {
         flex-direction: row;
         align-items: center;
+        min-height: 66px;
+        padding: 12px;
+      }
+
+      .panel.lecture .panel-number {
+        width: 32px;
+        height: 32px;
+      }
+
+      .panel.lecture .panel-title {
+        font-size: 1rem;
+      }
+
+      .panel.lecture .panel-description {
+        font-size: 0.72rem;
       }
 
       .open-link {
@@ -328,9 +406,12 @@
       }
     }
 
-    @media (min-width: 701px) {
-      .mobile-tabs {
-        display: none;
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
       }
     }
   </style>
@@ -342,7 +423,7 @@
     <div>
       <h1 class="site-title">Integration</h1>
       <p class="site-subtitle">
-        Lecture, problems, and worked solutions
+        A guided study of integration
       </p>
     </div>
 
@@ -354,48 +435,56 @@
   <main class="workspace">
 
     <!-- Mobile navigation -->
+
     <nav class="mobile-tabs"
          role="tablist"
          aria-label="Lecture resources">
 
-      <button class="tab-button"
-              id="tab-lecture"
-              role="tab"
-              aria-selected="true"
-              aria-controls="panel-lecture"
-              data-target="panel-lecture">
+      <button
+        class="tab-button"
+        id="tab-lecture"
+        role="tab"
+        aria-selected="true"
+        aria-controls="panel-lecture"
+        data-target="panel-lecture">
         Lecture
       </button>
 
-      <button class="tab-button"
-              id="tab-problems"
-              role="tab"
-              aria-selected="false"
-              aria-controls="panel-problems"
-              data-target="panel-problems">
+      <button
+        class="tab-button"
+        id="tab-problems"
+        role="tab"
+        aria-selected="false"
+        aria-controls="panel-problems"
+        data-target="panel-problems"
+        tabindex="-1">
         Problems
       </button>
 
-      <button class="tab-button"
-              id="tab-solutions"
-              role="tab"
-              aria-selected="false"
-              aria-controls="panel-solutions"
-              data-target="panel-solutions">
+      <button
+        class="tab-button"
+        id="tab-solutions"
+        role="tab"
+        aria-selected="false"
+        aria-controls="panel-solutions"
+        data-target="panel-solutions"
+        tabindex="-1">
         Solutions
       </button>
     </nav>
 
     <!-- PANEL 1: LECTURE -->
 
-    <section class="panel lecture is-active"
-             id="panel-lecture"
-             role="tabpanel"
-             aria-labelledby="tab-lecture">
+    <section
+      class="panel lecture is-active"
+      id="panel-lecture"
+      role="tabpanel"
+      aria-labelledby="tab-lecture">
 
       <div class="panel-header">
         <div class="panel-heading">
           <span class="panel-number">01</span>
+
           <div>
             <h2 class="panel-title">Lecture</h2>
             <p class="panel-description">
@@ -404,17 +493,18 @@
           </div>
         </div>
 
-        <a class="open-link"
-           href="integration.html"
-           target="_blank"
-           rel="noopener">
+        <a
+          class="open-link"
+          href="./integration.html"
+          target="_blank"
+          rel="noopener">
           Open ↗
         </a>
       </div>
 
       <iframe
         class="document-frame"
-        src="integration.html"
+        src="./integration.html"
         title="Integration lecture article">
       </iframe>
 
@@ -423,16 +513,18 @@
       </div>
     </section>
 
-    <!-- PANEL 2: PROBLEMS -->
+    <!-- PANEL 2: PRACTICE PROBLEMS -->
 
-    <section class="panel problems"
-             id="panel-problems"
-             role="tabpanel"
-             aria-labelledby="tab-problems">
+    <section
+      class="panel problems"
+      id="panel-problems"
+      role="tabpanel"
+      aria-labelledby="tab-problems">
 
       <div class="panel-header">
         <div class="panel-heading">
           <span class="panel-number">02</span>
+
           <div>
             <h2 class="panel-title">Problems</h2>
             <p class="panel-description">
@@ -441,18 +533,19 @@
           </div>
         </div>
 
-        <a class="open-link"
-           href="Practice-problems.pdf"
-           target="_blank"
-           rel="noopener">
+        <a
+          class="open-link"
+          href="./Practice-problems.pdf"
+          target="_blank"
+          rel="noopener">
           Open ↗
         </a>
       </div>
 
       <iframe
         class="document-frame"
-        src="Practice-problems.pdf"
-        title="Riemann Sums practice problems PDF">
+        src="./Practice-problems.pdf"
+        title="Integration practice problems PDF">
       </iframe>
 
       <div class="panel-footer">
@@ -460,16 +553,18 @@
       </div>
     </section>
 
-    <!-- PANEL 3: SOLUTIONS -->
+    <!-- PANEL 3: WORKED SOLUTIONS -->
 
-    <section class="panel solutions"
-             id="panel-solutions"
-             role="tabpanel"
-             aria-labelledby="tab-solutions">
+    <section
+      class="panel solutions"
+      id="panel-solutions"
+      role="tabpanel"
+      aria-labelledby="tab-solutions">
 
       <div class="panel-header">
         <div class="panel-heading">
           <span class="panel-number">03</span>
+
           <div>
             <h2 class="panel-title">Solutions</h2>
             <p class="panel-description">
@@ -478,17 +573,18 @@
           </div>
         </div>
 
-        <a class="open-link"
-           href="solutions.pdf"
-           target="_blank"
-           rel="noopener">
+        <a
+          class="open-link"
+          href="./solutions.pdf"
+          target="_blank"
+          rel="noopener">
           Open ↗
         </a>
       </div>
 
       <iframe
         class="document-frame"
-        src="solutions.pdf"
+        src="./solutions.pdf"
         title="Handwritten integration solutions PDF">
       </iframe>
 
@@ -513,10 +609,14 @@
         const targetId = tab.dataset.target;
 
         tabs.forEach((button) => {
+          const selected = button === tab;
+
           button.setAttribute(
             "aria-selected",
-            String(button === tab)
+            String(selected)
           );
+
+          button.tabIndex = selected ? 0 : -1;
         });
 
         panels.forEach((panel) => {
